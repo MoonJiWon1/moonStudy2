@@ -92,7 +92,8 @@ const PRINCIPLES = [
   { title: '함께 진화', desc: 'AI 모델이 발전하면 하네스도 그에 맞춰 더 단순하고 효율적으로 계속 진화해야 합니다.' },
 ]
 
-function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+type FadeInProps = { children: React.ReactNode; delay?: number }
+function FadeIn({ children, delay = 0 }: FadeInProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -105,7 +106,8 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   )
 }
 
-function Label({ children }: { children: React.ReactNode }) {
+type LabelProps = { children: React.ReactNode }
+function Label({ children }: LabelProps) {
   return (
     <div className="flex items-center gap-4">
       <span className="font-mono text-xs tracking-[0.2em] uppercase" style={{ color: '#94a3b8' }}>
