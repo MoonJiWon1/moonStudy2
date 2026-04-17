@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'fs/promises'
 import path from 'path'
 
-const FILE_PATH = path.join(process.cwd(), 'src/data/claude.md')
+const FILE_PATH = path.join(process.cwd(), 'CLAUDE.md')
 
 // CLAUDE.md 내용 읽기
 export async function GET() {
