@@ -160,10 +160,29 @@ export function GuideContent() {
             <span style={{ color: '#3b82f6' }}>CLAUDE.md 작성하기</span>
           </h1>
 
-          <p className="font-sans text-base leading-relaxed max-w-xl" style={{ color: '#64748b' }}>
+          <p className="font-sans text-base leading-relaxed max-w-xl mb-6" style={{ color: '#64748b' }}>
             단순한 규칙 나열이 아닙니다. 하네스 엔지니어링의 4대 기둥에 맞춰
             CLAUDE.md를 작성하면 AI가 일관되고 안전하게 동작합니다.
           </p>
+
+          {/* 다운로드 버튼 */}
+          <a
+            href="/harness-engineering-guide.md"
+            download="harness-engineering-guide.md"
+            className="inline-flex items-center gap-2 px-5 py-2.5 font-mono text-xs font-semibold rounded-lg transition-all duration-200 hover:opacity-80"
+            style={{
+              background: '#0f172a',
+              color: '#fff',
+              border: '1px solid #0f172a',
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            MD 파일 다운로드
+          </a>
         </FadeIn>
 
         {/* 4대 기둥별 섹션 */}
