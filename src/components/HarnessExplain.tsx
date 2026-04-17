@@ -24,26 +24,63 @@ const PILLARS = [
   {
     tag: '기둥 01',
     title: '컨텍스트 엔지니어링',
-    desc: '코딩 규칙, 기술 스택 같은 필요한 정보를 CLAUDE.md 같은 파일로 저장소에 배치하여 AI에게 적시에 제공합니다.',
+    desc: '코딩 규칙, 기술 스택 같은 필요한 정보를 AI가 읽기 쉬운 형태로 저장소에 배치해 적시에 제공합니다.',
+    how: '모든 규칙을 한 파일에 넣지 말고, 목차형(agent.md)으로 분리해 필요한 정보만 로드하게 합니다.',
     color: '#3b82f6',
   },
   {
     tag: '기둥 02',
     title: '아키텍처 제약',
     desc: '"좋은 코드를 짜줘"라고 부탁하는 대신, 규칙을 어기면 빌드나 배포가 불가능하도록 기계적으로 강제합니다.',
+    how: '프롬프트(부탁)가 아닌 Lint·Test·Hook 코드로 규칙 위반 시 실행 자체를 차단합니다.',
     color: '#8b5cf6',
   },
   {
     tag: '기둥 03',
     title: '피드백 루프',
-    desc: 'AI는 자신의 결과물을 스스로 과대평가합니다. 테스트 코드나 리뷰를 통해 즉각적인 교정 신호를 줍니다.',
+    desc: 'AI는 자신의 결과물을 스스로 과대평가합니다. 즉각적인 교정 신호로 실수를 배포 전에 잡아야 합니다.',
+    how: '로그, 스크린샷, 자동 테스트 결과를 통해 AI가 자신의 실수를 즉각 인지하게 합니다.',
     color: '#10b981',
   },
   {
     tag: '기둥 04',
     title: '엔트로피 관리',
-    desc: 'AI가 만든 중복 코드나 불필요한 파일을 주기적으로 정리합니다. 환경이 깨끗해야 AI도 올바르게 작동합니다.',
+    desc: 'AI가 만든 중복 코드나 불필요한 파일은 쌓일수록 이후 결과물의 품질을 떨어뜨립니다.',
+    how: '주기적으로 중복 코드를 제거하고 문서를 최신화하는 청소 전담 에이전트를 운영합니다.',
     color: '#f59e0b',
+  },
+]
+
+const WORKFLOW = [
+  {
+    step: 'Step 1',
+    title: '환경 설정',
+    sub: 'claude.md & agent.md',
+    desc: '프로젝트 루트에 claude.md를 두어 에이전트가 시작 시 반드시 읽게 합니다. 기술 스택, 빌드/테스트 명령어, 상세 규칙 파일들의 경로를 명시해 지도를 만듭니다.',
+  },
+  {
+    step: 'Step 2',
+    title: '작업 격리',
+    sub: 'Git Worktree',
+    desc: 'AI가 별도의 worktree를 생성해 독립된 공간에서 구현하고 테스트합니다. 메인 환경이 망가지는 것을 방지하고, 인간의 확인 없이도 안전한 실험을 가능하게 합니다.',
+  },
+  {
+    step: 'Step 3',
+    title: '강제성 부여',
+    sub: 'Husky & Verify Scripts',
+    desc: 'scripts/verify-task.sh로 린트·단위 테스트·빌드를 한 번에 실행합니다. Husky로 커밋 전 반드시 이 검증을 통과해야만 저장되도록 물리적으로 강제합니다.',
+  },
+  {
+    step: 'Step 4',
+    title: '가시성 확보',
+    sub: 'Logging & Screenshots',
+    desc: '테스트 실패 시 에러 로그와 UI 스크린샷을 logs/screenshots/ 폴더에 저장합니다. AI는 이 기록을 보고 자신의 실수를 스스로 판단해 코드를 수정합니다.',
+  },
+  {
+    step: 'Step 5',
+    title: '자동 문서화 및 머지',
+    sub: 'Merge',
+    desc: 'docs/plans/ 폴더에 작업 계획(active)과 완료 기록(completed)을 자동 관리해 히스토리를 보존합니다. 모든 테스트가 통과되면 AI가 직접 커밋하고 메인 브랜치에 합칩니다.',
   },
 ]
 
@@ -201,9 +238,55 @@ export function HarnessExplain() {
                   <p className="font-sans text-sm leading-relaxed" style={{ color: '#64748b' }}>
                     {p.desc}
                   </p>
+                  <div className="mt-1 pt-3 flex flex-col gap-1" style={{ borderTop: '1px solid #f1f5f9' }}>
+                    <span className="font-mono text-xs" style={{ color: p.color }}>실전 적용</span>
+                    <p className="font-sans text-xs leading-relaxed" style={{ color: '#94a3b8' }}>
+                      {p.how}
+                    </p>
+                  </div>
                 </div>
               </FadeIn>
             ))}
+          </div>
+        </div>
+
+        {/* ── 실전 워크플로우 5단계 ── */}
+        <div className="flex flex-col gap-8">
+          <FadeIn><Label>실전 워크플로우 — 5단계 프로세스</Label></FadeIn>
+
+          <FadeIn delay={0.05}>
+            <p className="font-sans text-sm leading-relaxed" style={{ color: '#64748b' }}>
+              인간의 개입을 최소화하고 AI가 스스로 완결성 있는 코드를 짜게 만드는 5단계 프로세스입니다.
+            </p>
+          </FadeIn>
+
+          <div className="flex flex-col gap-0">
+            {WORKFLOW.map((w, i) => (
+              <FadeIn key={w.step} delay={i * 0.07}>
+                <div className="h-px w-full" style={{ background: '#e2e8f0' }} />
+                <div className="grid grid-cols-[4rem_1fr] sm:grid-cols-[6rem_1fr] gap-6 py-8">
+                  <div className="flex flex-col gap-1 pt-1">
+                    <span className="font-mono font-bold"
+                      style={{ fontSize: 'clamp(1.2rem, 3vw, 1.8rem)', lineHeight: 1, color: '#dbeafe' }}>
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-2 pt-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h3 className="font-sans font-bold text-base" style={{ color: '#0f172a' }}>{w.title}</h3>
+                      <span className="font-mono text-xs px-2 py-0.5 rounded"
+                        style={{ background: '#eff6ff', color: '#3b82f6', border: '1px solid #bfdbfe' }}>
+                        {w.sub}
+                      </span>
+                    </div>
+                    <p className="font-sans text-sm leading-relaxed" style={{ color: '#64748b' }}>
+                      {w.desc}
+                    </p>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+            <div className="h-px w-full" style={{ background: '#e2e8f0' }} />
           </div>
         </div>
 

@@ -81,6 +81,19 @@ src/
 2. npm run build      → 빌드 성공 확인
 에러가 하나라도 있으면 수정 후 재실행. 둘 다 통과해야만 완료.`,
       },
+      {
+        badge: '고급',
+        title: 'Verify Scripts (자동 검증)',
+        desc: '단순 빌드 체크를 넘어 린트·테스트·빌드를 한 번에 실행하는 verify 스크립트를 만들면 AI가 스스로 검증합니다. UI 프로젝트라면 스크린샷도 logs/screenshots/ 에 저장해 AI가 시각적 결과를 확인하게 합니다.',
+        code: `## 자동 검증 스크립트
+# scripts/verify-task.sh 를 만들어두고 CLAUDE.md에 명시
+## 검증 명령
+npm run lint         → 린트 오류 0개 확인
+npx tsc --noEmit     → 타입 오류 0개 확인
+npm run test -- --run → 테스트 전체 통과 확인
+npm run build        → 빌드 성공 확인
+# 실패 시 로그를 logs/ 폴더에 저장하고 스스로 수정할 것`,
+      },
     ],
   },
   {
@@ -97,6 +110,19 @@ src/
 - 주석 처리된 코드 블록은 남기지 말 것
 - 새 컴포넌트 추가 시 기존 유사 컴포넌트 재사용 먼저 검토
 - 파일 새로 만들기보다 기존 파일 수정 선호`,
+      },
+      {
+        badge: '고급',
+        title: 'Husky — 커밋 전 강제 검증',
+        desc: 'Husky를 설치하면 커밋 시 자동으로 검증 스크립트가 실행됩니다. CLAUDE.md에 명시해두면 AI가 커밋 전 Husky가 실행됨을 인지하고 사전에 오류를 수정합니다.',
+        code: `## Git Hook (Husky)
+이 프로젝트는 Husky pre-commit hook이 설정되어 있음.
+커밋 전 자동으로 아래가 실행됨:
+  - npm run lint
+  - npx tsc --noEmit
+  - npm run test -- --run
+Hook을 --no-verify 플래그로 우회하지 말 것.
+# 설치: npx husky-init && npm install`,
       },
     ],
   },
